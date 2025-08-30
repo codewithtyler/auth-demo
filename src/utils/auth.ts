@@ -82,13 +82,18 @@ export const authService = {
       throw new Error('Please enter a valid email address');
     }
 
+    console.log('Starting signup process for:', credentials.email);
     // Step 1: Validate email domain
+    console.log('Validating email domain...');
     const domainValidation = await validateEmailDomain(credentials.email);
+    console.log('Domain validation result:', domainValidation);
+    
     if (!domainValidation.success) {
       throw new Error(domainValidation.message);
     }
 
     // Step 2: Create user with Supabase
+    console.log('Creating Supabase account...');
     const { data, error } = await supabase.auth.signUp({
       email: credentials.email,
       password: credentials.password,
@@ -97,6 +102,7 @@ export const authService = {
       }
     });
 
+    console.log('Supabase signup result:', { data, error });
     if (error) {
       console.error('Signup error:', error);
       throw new Error(error.message || 'Signup failed');
@@ -106,6 +112,7 @@ export const authService = {
       throw new Error('Signup failed - no user data returned');
     }
 
+    console.log('Account created successfully:', data.user.id);
     return mapSupabaseUser(data.user);
   },
 
