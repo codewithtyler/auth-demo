@@ -11,6 +11,8 @@ const Dashboard: React.FC = () => {
   // Debug function to check user data
   const checkUserData = async () => {
     try {
+      console.log('=== DEBUG: Checking user data ===');
+      
       // Check current session
       const { data: session } = await supabase.auth.getSession();
       console.log('Current session:', session);
@@ -21,11 +23,20 @@ const Dashboard: React.FC = () => {
         .select('*');
       console.log('Profiles:', profiles, 'Error:', profileError);
       
-      // Check auth users (this might not work due to RLS)
-      const { data: authUsers, error: authError } = await supabase
-        .from('auth.users')
+      // Check allowed domains
+      const { data: domains, error: domainsError } = await supabase
+        .from('allowed_domains')
         .select('*');
-      console.log('Auth users:', authUsers, 'Error:', authError);
+      console.log('Allowed domains:', domains, 'Error:', domainsError);
+      
+      // Test domain validation directly
+      if (user?.email) {
+        console.log('Testing domain validation for current user email...');
+        const { data: validationResult, error: validationError } = await supabase.rpc('validate_email_domain', {
+          email_address: user.email
+        });
+        console.log('Domain validation result:', validationResult, 'Error:', validationError);
+      }
       
     } catch (error) {
       console.error('Debug error:', error);
