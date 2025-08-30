@@ -85,13 +85,18 @@ export const authService = {
     console.log('Starting signup process for:', credentials.email);
     // Step 1: Validate email domain
     console.log('Validating email domain...');
+    console.log('Calling domain validation for:', credentials.email);
     const domainValidation = await validateEmailDomain(credentials.email);
-    console.log('Domain validation result:', domainValidation);
+    console.log('Domain validation response:', domainValidation);
+    console.log('Validation success:', domainValidation.success);
+    console.log('Validation message:', domainValidation.message);
     
     if (!domainValidation.success) {
+      console.log('Domain validation failed, throwing error:', domainValidation.message);
       throw new Error(domainValidation.message);
     }
 
+    console.log('Domain validation passed, proceeding with Supabase signup...');
     // Step 2: Create user with Supabase
     console.log('Creating Supabase account...');
     const { data, error } = await supabase.auth.signUp({
