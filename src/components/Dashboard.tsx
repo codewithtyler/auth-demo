@@ -1,7 +1,7 @@
 // Protected dashboard page with user data and metrics
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { LogOut, User, TrendingUp, Users, DollarSign, Activity, Calendar, MoreHorizontal } from 'lucide-react';
+import { LogOut, User, TrendingUp, Users, DollarSign, Activity, Calendar, MoreHorizontal, Loader2 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 
 const Dashboard: React.FC = () => {
