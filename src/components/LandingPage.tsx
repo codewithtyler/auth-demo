@@ -167,15 +167,6 @@ const LandingPage: React.FC = () => {
               </div>
             )}
 
-            {/* Domain Info for Testing */}
-            {isSignup && (
-              <div className="bg-blue-900/50 border border-blue-500 rounded-lg p-4">
-                <p className="text-blue-300 text-sm">
-                  <strong>For testing:</strong> Use emails ending with @demo.com, @test.com, @example.com, @yourcompany.com, or @gmail.com
-                </p>
-              </div>
-            )}
-
             {/* Submit Button */}
             <button
               type="submit"
