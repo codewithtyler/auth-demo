@@ -7,7 +7,7 @@
     - Add better error handling and debugging
 
   2. Testing
-    - Function should now properly validate emails like tyler@demo.com against demo.com
+    - Function should now properly validate emails
     - Returns proper success/error responses
 */
 
