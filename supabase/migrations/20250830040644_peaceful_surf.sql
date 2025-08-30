@@ -52,14 +52,6 @@ CREATE POLICY "Authenticated users can read allowed domains"
   TO authenticated
   USING (true);
 
--- Insert some default allowed domains
-INSERT INTO public.allowed_domains (domain) 
-VALUES 
-  ('yourcompany.com'),
-  ('example.com'),
-  ('demo.com')
-ON CONFLICT (domain) DO NOTHING;
-
 -- Function to validate email domain
 CREATE OR REPLACE FUNCTION public.validate_email_domain(email_address text)
 RETURNS json
