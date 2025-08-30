@@ -91,13 +91,3 @@ EXCEPTION
     );
 END;
 $$;
-
--- Test the function with a demo email
-DO $$
-DECLARE
-  test_result json;
-BEGIN
-  SELECT public.validate_email_domain('tyler@demo.com') INTO test_result;
-  RAISE LOG 'Test validation result for tyler@demo.com: %', test_result;
-END;
-$$;
