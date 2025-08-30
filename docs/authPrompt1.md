@@ -1,0 +1,7 @@
+Add functionality to the existing login and signup forms using Supabase authentication with server-side email domain validation.
+The UI is already there, just make it work. Set up a new Supabase project and configure it properly. Connect the existing signup form to a two-step process where it first calls a Supabase database function to validate the email domain, then proceeds with actual signup if validation passes. Connect the existing login form to standard Supabase auth login.
+Create the database function in Supabase that validates email domains and returns success or error. The function should check if the email ends with an allowed company domain like @yourcompany.com.
+Add auth state management to track when users are logged in or out. Make the existing dashboard page actually protected so only authenticated users can see it. Add logout functionality that works with the existing logout button if there is one.
+Set up the validation flow so the signup form calls the database function first to check if the email domain is allowed before attempting user creation. Show appropriate error messages if domain validation fails or if Supabase auth fails.
+Add loading states to the existing forms during auth operations. Make sure authenticated users stay on the dashboard and unauthenticated users get redirected to the login page.
+Configure all the necessary Supabase settings including auth providers, email templates, and security policies as needed for a complete working demo.

@@ -1,11 +1,47 @@
 // Protected dashboard page with user data and metrics
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { LogOut, User, TrendingUp, Users, DollarSign, Activity, Calendar, MoreHorizontal } from 'lucide-react';
+import { LogOut, User, TrendingUp, Users, DollarSign, Activity, Calendar, MoreHorizontal, Loader2, RefreshCw } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabase';
 
 const Dashboard: React.FC = () => {
   const { user, logout, loading } = useAuth();
+  
+  // Debug function to check user data
+  const checkUserData = async () => {
+    try {
+      console.log('=== DEBUG: Checking user data ===');
+      
+      // Check current session
+      const { data: session } = await supabase.auth.getSession();
+      console.log('Current session:', session);
+      
+      // Check profiles table
+      const { data: profiles, error: profileError } = await supabase
+        .from('profiles')
+        .select('*');
+      console.log('Profiles:', profiles, 'Error:', profileError);
+      
+      // Check allowed domains
+      const { data: domains, error: domainsError } = await supabase
+        .from('allowed_domains')
+        .select('*');
+      console.log('Allowed domains:', domains, 'Error:', domainsError);
+      
+      // Test domain validation directly
+      if (user?.email) {
+        console.log('Testing domain validation for current user email...');
+        const { data: validationResult, error: validationError } = await supabase.rpc('validate_email_domain', {
+          email_address: user.email
+        });
+        console.log('Domain validation result:', validationResult, 'Error:', validationError);
+      }
+      
+    } catch (error) {
+      console.error('Debug error:', error);
+    }
+  };
 
   // Mock data for charts and metrics
   const chartData = [
@@ -49,6 +85,14 @@ const Dashboard: React.FC = () => {
                 <User className="h-5 w-5" />
                 <span className="text-sm">{user.email}</span>
               </div>
+              <button
+                onClick={checkUserData}
+                className="flex items-center space-x-2 px-3 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white rounded-lg transition-colors duration-200"
+                title="Debug user data"
+              >
+                <RefreshCw className="h-4 w-4" />
+                <span className="hidden sm:inline text-xs">Debug</span>
+              </button>
               <button
                 onClick={handleLogout}
                 disabled={loading}

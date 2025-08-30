@@ -21,41 +21,11 @@ const LandingPage: React.FC = () => {
     return <Navigate to="/dashboard" replace />;
   }
 
-  const validateForm = () => {
-    const errors: Record<string, string> = {};
-    
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email) {
-      errors.email = 'Email is required';
-    } else if (!emailRegex.test(formData.email)) {
-      errors.email = 'Please enter a valid email address';
-    }
-    
-    // Password validation
-    if (!formData.password) {
-      errors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
-      errors.password = 'Password must be at least 6 characters long';
-    }
-    
-    // Confirm password validation (only for signup)
-    if (isSignup) {
-      if (!formData.confirmPassword) {
-        errors.confirmPassword = 'Please confirm your password';
-      } else if (formData.password !== formData.confirmPassword) {
-        errors.confirmPassword = 'Passwords do not match';
-      }
-    }
-    
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) return;
+    // Clear previous errors
+    setFormErrors({});
     
     try {
       if (isSignup) {
@@ -63,6 +33,8 @@ const LandingPage: React.FC = () => {
       } else {
         await login({ email: formData.email, password: formData.password });
       }
+      // Clear form on success
+      setFormData({ email: '', password: '', confirmPassword: '' });
     } catch (err) {
       // Error is handled by the auth context
     }
